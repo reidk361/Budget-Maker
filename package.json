@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/reidk361/Budget-Maker/issues"
   },
-  "homepage": "https://github.com/reidk361/Budget-Maker#readme"
+  "homepage": "https://github.com/reidk361/Budget-Maker#readme",
+  "devDependencies": {
+    "netlify-cli": "^2.37.0"
+  },
+  "dependencies": {
+    "mongoose": "^6.0.6"
+  }
 }
