@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   brand: String,
   title: String,
-  cost: NumberDecimal(),
+  cost: Number,
   level: Number
 });
 

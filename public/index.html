@@ -19,13 +19,39 @@
         <button id="text-form-submit" type="submit">Submit</button>
       </form>
     </div>
+    <div id="response-output">
+      <button id="new-sub">Add New Subscription</button>
+    </div>
     <div>
       <h3>Your Target Budget:</h3>
       <h3>Current Total:</h3>
-      <h3>Comparison:</h3>  
+      <h3>Comparison:</h3>
     </div>
-    <div>
-      <h3></h3>
-    </div>
+
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", () => {
+        const submitBtn = document.getElementById("text-form-submit");
+        const responseDiv = document.getElementById("response-output");
+        submitBtn.addEventListener("click", async (event) => {
+          event.preventDefault();
+          const response = await fetch("/.netlify/functions/fetchSubs", {
+            method: "POST",
+            body: JSON.stringify({
+              brand: document.getElementById("inputSubscription").value,
+            }),
+          }).then((response) => response.json());
+          function subBtns() {
+            response.reqSub.forEach((element) => {
+              let subBtn = document.createElement("p");
+              subBtn.textContent = `${element.brand} - ${element.title} - $${element.cost}`;
+              responseDiv.append(subBtn);
+            });
+          }
+          subBtns();
+          // responseText.innerText = JSON.stringify(response);
+        });
+      });
+    </script>
+    <script type="text/javascript" src="./js/script.js"></script>
   </body>
 </html>
