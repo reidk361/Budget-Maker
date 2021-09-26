@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Budget Maker</title>
-  </head>
-  <body>
-    <div>
-      <form>
-        <label for="inputZip" class="form-label">Subscription</label>
-        <input
-          type="text"
-          class="form-control"
-          id="inputSubscription"
-          name="subscription"
-        />
-        <button id="text-form-submit" type="submit">Submit</button>
-      </form>
-    </div>
-    <div id="response-output">
-      <button id="new-sub">Add New Subscription</button>
-    </div>
-    <div>
-      <h3>Your Target Budget:</h3>
-      <h3>Current Total:</h3>
-      <h3>Comparison:</h3>
-    </div>
 
-    <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", () => {
-        const submitBtn = document.getElementById("text-form-submit");
-        const responseDiv = document.getElementById("response-output");
-        submitBtn.addEventListener("click", async (event) => {
-          event.preventDefault();
-          const response = await fetch("/.netlify/functions/fetchSubs", {
-            method: "POST",
-            body: JSON.stringify({
-              brand: document.getElementById("inputSubscription").value,
-            }),
-          }).then((response) => response.json());
-          function subBtns() {
-            response.reqSub.forEach((element) => {
-              let subBtn = document.createElement("p");
-              subBtn.textContent = `${element.brand} - ${element.title} - $${element.cost}`;
-              responseDiv.append(subBtn);
-            });
-          }
-          subBtns();
-          // responseText.innerText = JSON.stringify(response);
-        });
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Maker</title>
+</head>
+
+<body>
+  <div>
+    <form>
+      <label for="inputZip" class="form-label">Subscription</label>
+      <input type="text" class="form-control" id="inputSubscription" name="subscription" />
+      <button id="text-form-submit" type="submit">Submit</button>
+    </form>
+  </div>
+  <div id="response-output">
+    <button id="new-sub">Add New Subscription</button>
+    <button id="seed">Seed Subscription DB</button>
+    <button id="clear">Clear Subscription DB</button>
+  </div>
+  <div>
+    <h3>Your Target Budget:</h3>
+    <h3>Current Total:</h3>
+    <h3>Comparison:</h3>
+  </div>
+
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+      const submitBtn = document.getElementById("text-form-submit");
+      const seedBtn = document.getElementById("seed");
+      const clearBtn = document.getElementById("clear");
+      const responseDiv = document.getElementById("response-output");
+      submitBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const response = await fetch("/.netlify/functions/fetchSubs", {
+          method: "POST",
+          body: JSON.stringify({
+            brand: document.getElementById("inputSubscription").value,
+          }),
+        }).then((response) => response.json());
+        function subBtns() {
+          response.reqSub.forEach((element) => {
+            let subBtn = document.createElement("p");
+            subBtn.textContent = `${element.brand} - ${element.title} - $${element.cost}`;
+            responseDiv.append(subBtn);
+          });
+        }
+        subBtns();
+        // responseText.innerText = JSON.stringify(response);
       });
-    </script>
-    <script type="text/javascript" src="./js/script.js"></script>
-  </body>
+      seedBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const response = await fetch("/.netlify/functions/seed", {
+          method: "GET",
+        }).then((response) => response.json());
+      });  
+      clearBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const response = await fetch("/.netlify/functions/clear", {
+          method: "GET",
+        }).then((response) => response.json());
+      }); 
+    });
+  </script>
+  <script type="text/javascript" src="./js/script.js"></script>
+</body>
+
 </html>

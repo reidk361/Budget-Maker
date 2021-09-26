@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Subscription = require("../models/subscriptions");
+const Subscription = require("../../models/subscriptions");
 mongoose.connect("mongodb://localhost/my_database");
 
 function seed(){
@@ -37,4 +37,11 @@ function seed(){
     });
 }
 
-module.exports = seed;
+exports.handler = async function seedDB(event, context){
+  try {
+    await seed();
+    return console.log("DB Seeded")
+  } catch (error) {
+    console.error(error);
+  }
+}
